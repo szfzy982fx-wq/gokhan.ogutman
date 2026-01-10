@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOKHAN OGUTMAN Emlak Asistanı (v17)</title>
+    <title>GOKHAN OGUTMAN Emlak Asistanı (v18)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -64,17 +64,26 @@
 
         /* Modals */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; }
-        .modal-content { background: white; margin: 3% auto; padding: 25px; width: 85%; border-radius: 8px; position: relative; max-height: 90vh; display: flex; flex-direction: column; }
+        .modal-content { background: white; margin: 2% auto; padding: 25px; width: 90%; border-radius: 8px; position: relative; max-height: 95vh; display: flex; flex-direction: column; }
         .modal-body { overflow-y: auto; margin-top: 15px; padding-right: 10px; }
         .tool-modal-content { width: 450px; margin: 10% auto; }
 
-        /* CRM Styles */
-        .crm-header { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        /* CRM Styles & Scroll Fix */
+        .crm-header { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; flex-shrink: 0; }
         .crm-tab { padding: 10px 20px; cursor: pointer; font-weight: bold; border-radius: 6px; border: 1px solid #eee; background: #f9f9f9; }
         .crm-tab.active { background: var(--secondary); color: white; border-color: var(--secondary); }
-        .crm-input-panel { background: #f1f2f6; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 5px solid var(--secondary); }
+        .crm-input-panel { background: #f1f2f6; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 5px solid var(--secondary); flex-shrink: 0; }
         .crm-input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; align-items: start; }
         .crm-buttons { display: flex; gap: 10px; margin-top: 15px; justify-content: flex-end; }
+        
+        /* SCROLLABLE TABLE AREA */
+        .table-scroll-wrapper {
+            max-height: 450px; /* Listenin görüneceği yükseklik */
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .crm-table thead th { position: sticky; top: 0; z-index: 1; box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1); }
         
         .row-alert { background-color: var(--alert-bg) !important; color: #721c24; }
         .row-warning { background-color: var(--warning-bg) !important; color: #856404; }
@@ -170,7 +179,7 @@
 </div>
 
 <div id="crmModal" class="modal" onclick="closeModalOutside(event, 'crmModal')">
-    <div class="modal-content" style="width:90%; height:95%;">
+    <div class="modal-content">
         <div style="display:flex;justify-content:space-between; margin-bottom:10px;"><h3>👥 Müşteri İlişkileri (CRM)</h3><span onclick="closeModal('crmModal')" style="cursor:pointer;font-size:24px;">&times;</span></div>
         
         <div class="crm-header">
@@ -192,14 +201,16 @@
                     <button id="btnInvCancel" class="btn-cancel" style="flex:0; display:none;" onclick="resetCRMForm('investors')">İPTAL</button>
                 </div>
             </div>
-            <table class="crm-table">
-                <thead><tr><th>Ad Soyad</th><th>Şehir</th><th>Telefon</th><th>Talep Detayı</th><th width="80">İşlem</th></tr></thead>
-                <tbody id="investorTableBody"></tbody>
-            </table>
+            <div class="table-scroll-wrapper">
+                <table class="crm-table">
+                    <thead><tr><th>Ad Soyad</th><th>Şehir</th><th>Telefon</th><th>Talep Detayı</th><th width="80">İşlem</th></tr></thead>
+                    <tbody id="investorTableBody"></tbody>
+                </table>
+            </div>
         </div>
 
         <div id="crmNetwork" class="crm-section" style="display:none;">
-            <div style="background:#eafaf1; padding:10px; margin-bottom:15px; border-radius:4px; border:1px solid #27ae60; color:#27ae60; font-size:13px;">
+            <div style="background:#eafaf1; padding:10px; margin-bottom:15px; border-radius:4px; border:1px solid #27ae60; color:#27ae60; font-size:13px; flex-shrink:0;">
                 ℹ️ <b>Bilgi:</b> Kişiyi düzenlemek için listedeki "DÜZENLE" butonuna basınız. Ekleme ve silme işlemi yukarıdaki formdan yapılır.
             </div>
             <div class="crm-input-panel">
@@ -216,10 +227,12 @@
                     <button id="btnNetCancel" class="btn-cancel" style="flex:0; display:none;" onclick="resetCRMForm('network')">İPTAL</button>
                 </div>
             </div>
-            <table class="crm-table">
-                <thead><tr><th>Durum</th><th>Ad Soyad</th><th>Şehir</th><th>Telefon</th><th>Arz / Potansiyel</th><th>Son Arama</th><th width="120">Takip</th><th width="80">İşlem</th></tr></thead>
-                <tbody id="networkTableBody"></tbody>
-            </table>
+            <div class="table-scroll-wrapper">
+                <table class="crm-table">
+                    <thead><tr><th>Durum</th><th>Ad Soyad</th><th>Şehir</th><th>Telefon</th><th>Arz / Potansiyel</th><th>Son Arama</th><th width="120">Takip</th><th width="80">İşlem</th></tr></thead>
+                    <tbody id="networkTableBody"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -234,7 +247,7 @@
     const floorList = ["Giriş", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "Dubleks", "Tripleks"];
     const roomList = ["1+1", "2+1", "3+1", "4+1", "5+1", "Villa", "İşyeri"];
     
-    // DB - Yenilenen İsim
+    // DB - Veritabanı (v17 ile aynı devam ediyor)
     let crmData = JSON.parse(localStorage.getItem('GokhanOgutman_CRM_v17')) || { investors: [], network: [] };
     let portfolio = JSON.parse(localStorage.getItem('GokhanOgutman_EST_DB_v17')) || [];
     let editingId = null;
