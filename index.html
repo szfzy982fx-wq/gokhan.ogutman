@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOKHAN OGUTMAN Emlak Asistanı (v18)</title>
+    <title>KARACABAYRE.EST Emlak Asistanı (v22)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -17,6 +17,10 @@
             --alert-bg: #f8d7da;
         }
         body { font-family: 'Segoe UI', sans-serif; background: #eef2f3; margin: 0; padding: 20px; color: #333; }
+        
+        /* SCROLL FIX */
+        body.no-scroll { overflow: hidden; } 
+
         .container { max-width: 1800px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         
         /* Header */
@@ -63,12 +67,12 @@
         .filter-bar input, .filter-bar select { padding: 8px; border: none; border-radius: 4px; color: #333; }
 
         /* Modals */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; overflow-y: auto; }
         .modal-content { background: white; margin: 2% auto; padding: 25px; width: 90%; border-radius: 8px; position: relative; max-height: 95vh; display: flex; flex-direction: column; }
         .modal-body { overflow-y: auto; margin-top: 15px; padding-right: 10px; }
         .tool-modal-content { width: 450px; margin: 10% auto; }
 
-        /* CRM Styles & Scroll Fix */
+        /* CRM Styles */
         .crm-header { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; flex-shrink: 0; }
         .crm-tab { padding: 10px 20px; cursor: pointer; font-weight: bold; border-radius: 6px; border: 1px solid #eee; background: #f9f9f9; }
         .crm-tab.active { background: var(--secondary); color: white; border-color: var(--secondary); }
@@ -76,14 +80,20 @@
         .crm-input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; align-items: start; }
         .crm-buttons { display: flex; gap: 10px; margin-top: 15px; justify-content: flex-end; }
         
-        /* SCROLLABLE TABLE AREA */
-        .table-scroll-wrapper {
-            max-height: 450px; /* Listenin görüneceği yükseklik */
-            overflow-y: auto;
-            border: 1px solid #eee;
-            border-radius: 4px;
+        /* IPHONE & IOS FIXES */
+        .table-scroll-wrapper { 
+            height: 50vh; 
+            overflow-y: auto; 
+            border: 1px solid #eee; 
+            border-radius: 4px; 
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch; /* iPhone'da akıcı kaydırma */
+            background-color: white; /* Arka planı beyaza zorla */
         }
-        .crm-table thead th { position: sticky; top: 0; z-index: 1; box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1); }
+        .crm-table { width: 100%; border-collapse: collapse; background-color: white; }
+        .crm-table tr { background-color: white; } /* iPhone şeffaflık sorunu çözümü */
+        .crm-table tr:hover { background-color: #f9f9f9; } /* Hover efekti */
+        .crm-table thead th { position: sticky; top: 0; z-index: 1; box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1); background-color: #34495e; color: white; }
         
         .row-alert { background-color: var(--alert-bg) !important; color: #721c24; }
         .row-warning { background-color: var(--warning-bg) !important; color: #856404; }
@@ -118,7 +128,7 @@
 <div class="container">
     <header>
         <div>
-            <h1>🏢 GOKHAN OGUTMAN <span style="font-size:12px; color:#27ae60; border:1px solid #27ae60; padding:2px 8px; border-radius:10px;">HDD KAYIT AKTİF</span></h1>
+            <h1>🏢 KARACABAYRE.EST <span style="font-size:12px; color:#27ae60; border:1px solid #27ae60; padding:2px 8px; border-radius:10px;">HDD KAYIT AKTİF</span></h1>
         </div>
         <div class="backup-controls">
             <input type="file" id="fileUpload" style="display:none;" onchange="uploadData(this)">
@@ -156,7 +166,7 @@
                 <div class="form-group" style="flex:1;"><label>Yetki Bitiş</label><input type="date" id="inpAuthEnd"></div>
             </div>
             <div class="form-group"><label>Müşteri Ad Soyad</label><input type="text" id="inpRef"></div>
-            <div class="form-group"><label>Müşteri Telefon</label><input type="text" id="inpPhone" placeholder="05XX..." maxlength="17" oninput="formatPhone(this)"></div>
+            <div class="form-group"><label>Müşteri Telefon</label><input type="text" id="inpPhone" placeholder="0 (5XX) XXX XX XX" maxlength="17" oninput="formatPhone(this)"></div>
             <div class="form-group"><label>Dosya / Link</label><textarea id="inpLink" placeholder="Link veya Dosya Yolu..." rows="1" class="auto-expand" oninput="autoResize(this)"></textarea></div>
             <div class="form-group" style="grid-column:span 2;"><label>Açıklama</label><textarea id="inpDesc" class="auto-expand" placeholder="Detaylı açıklama..." oninput="autoResize(this)"></textarea></div>
             <div class="form-buttons">
@@ -192,7 +202,7 @@
                 <div class="crm-input-grid">
                     <div class="form-group"><label>Ad Soyad</label><input type="text" id="invName"></div>
                     <div class="form-group"><label>Şehir</label><input type="text" id="invCity" value="Antalya"></div>
-                    <div class="form-group"><label>Telefon (Alt alta çoklu)</label><textarea id="invPhone" rows="2" class="auto-expand" placeholder="+(90) (XXX) XXX XX XX" oninput="formatPhoneMulti(this)"></textarea></div>
+                    <div class="form-group"><label>Telefon (Alt alta çoklu)</label><textarea id="invPhone" rows="2" class="auto-expand" placeholder="0 (5XX) XXX XX XX" oninput="formatPhoneMulti(this)"></textarea></div>
                     <div class="form-group"><label>Talep</label><textarea id="invRequest" rows="2" class="auto-expand" placeholder="Detaylar..."></textarea></div>
                 </div>
                 <div class="crm-buttons">
@@ -217,7 +227,7 @@
                 <div class="crm-input-grid">
                     <div class="form-group"><label>Ad Soyad</label><input type="text" id="netName"></div>
                     <div class="form-group"><label>Şehir</label><input type="text" id="netCity" value="Antalya"></div>
-                    <div class="form-group"><label>Telefon (Alt alta çoklu)</label><textarea id="netPhone" rows="2" class="auto-expand" placeholder="+(90) (XXX) XXX XX XX" oninput="formatPhoneMulti(this)"></textarea></div>
+                    <div class="form-group"><label>Telefon (Alt alta çoklu)</label><textarea id="netPhone" rows="2" class="auto-expand" placeholder="0 (5XX) XXX XX XX" oninput="formatPhoneMulti(this)"></textarea></div>
                     <div class="form-group"><label>Arz Türü / Potansiyel</label><textarea id="netSupply" rows="2" class="auto-expand" placeholder="Örn: Site Yöneticisi"></textarea></div>
                     <div class="form-group"><label>Son Arama</label><input type="date" id="netLastCall"></div>
                 </div>
@@ -247,9 +257,9 @@
     const floorList = ["Giriş", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "Dubleks", "Tripleks"];
     const roomList = ["1+1", "2+1", "3+1", "4+1", "5+1", "Villa", "İşyeri"];
     
-    // DB - Veritabanı (v17 ile aynı devam ediyor)
-    let crmData = JSON.parse(localStorage.getItem('GokhanOgutman_CRM_v17')) || { investors: [], network: [] };
-    let portfolio = JSON.parse(localStorage.getItem('GokhanOgutman_EST_DB_v17')) || [];
+    // DB - KaracabayRE v19
+    let crmData = JSON.parse(localStorage.getItem('KaracabayRE_CRM_v19')) || { investors: [], network: [] };
+    let portfolio = JSON.parse(localStorage.getItem('KaracabayRE_EST_DB_v19')) || [];
     let editingId = null;
     let crmEditingId = null;
 
@@ -257,7 +267,25 @@
 
     // --- HELPER FUNCTIONS ---
     function autoResize(el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
-    function formatPhone(input) { let n = input.value.replace(/\D/g, ''); if(n.length===0){input.value='';return;} if(n[0]!=='0') n='0'+n; n=n.substring(0,11); input.value = n; }
+    
+    // DÜZELTİLDİ: Tek satırlık telefon (Portföy)
+    function formatPhone(input) {
+        let n = input.value.replace(/\D/g, ''); 
+        if(n.length===0){input.value='';return;} 
+        if(n[0]!=='0') n='0'+n; 
+        n=n.substring(0,11); 
+        
+        let f = "";
+        if(n.length>0) f += n.substring(0,1);
+        if(n.length>1) f += " (" + n.substring(1,4);
+        if(n.length>4) f += ") " + n.substring(4,7);
+        if(n.length>7) f += " " + n.substring(7,9);
+        if(n.length>9) f += " " + n.substring(9,11);
+        
+        input.value = f;
+    }
+
+    // DÜZELTİLDİ: Çok satırlık telefon (CRM)
     function formatPhoneMulti(input) {
         let lines = input.value.split('\n');
         let formattedLines = lines.map(line => {
@@ -267,15 +295,26 @@
         });
         let newVal = formattedLines.join('\n'); if(input.value !== newVal) { input.value = newVal; }
     }
+    
     function formatCurrency(input) { let v=input.value.replace(/\D/g, ''); input.value=v.replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
     function parsePrice(v) { return v ? parseInt(v.toString().replace(/\./g,'')) : 0; }
-    function openModal(id) { document.getElementById(id).style.display = 'block'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function closeModalOutside(e, id) { if(e.target == document.getElementById(id)) closeModal(id); }
+    
+    // --- MODAL & SCROLL LOCK LOGIC ---
+    function openModal(id) { 
+        document.getElementById(id).style.display = 'block'; 
+        document.body.classList.add('no-scroll'); 
+    }
+    function closeModal(id) { 
+        document.getElementById(id).style.display = 'none'; 
+        document.body.classList.remove('no-scroll'); 
+    }
+    function closeModalOutside(e, id) { 
+        if(e.target == document.getElementById(id)) closeModal(id); 
+    }
 
     // --- CRM LOGIC ---
     function openCRM() {
-        document.getElementById('crmModal').style.display = 'block';
+        openModal('crmModal');
         renderInvestors();
         renderNetwork();
         document.getElementById('netLastCall').valueAsDate = new Date();
@@ -339,7 +378,7 @@
         });
     }
     function updateCallDate(id) { const idx = crmData.network.findIndex(n => n.id === id); if(idx !== -1) { crmData.network[idx].lastCall = new Date().toISOString().split('T')[0]; saveCRM(); renderNetwork(); } }
-    function saveCRM() { localStorage.setItem('GokhanOgutman_CRM_v17', JSON.stringify(crmData)); }
+    function saveCRM() { localStorage.setItem('KaracabayRE_CRM_v19', JSON.stringify(crmData)); }
 
     // --- OTHER TOOLS LOGIC ---
     let calcExp = "";
@@ -369,10 +408,10 @@
     }
     function deleteFromForm() { if(confirm('SİLİNECEK!')) { portfolio = portfolio.filter(item => item.id !== editingId); saveToDisk(); renderTable(); resetForm(); } }
     function resetForm() { editingId = null; document.getElementById('formTitle').innerText = "➕ Yeni Portföy Ekle"; document.getElementById('btnSave').innerText = "KAYDET"; document.getElementById('btnSave').style.background = "#27ae60"; document.getElementById('btnDelete').style.display = "none"; document.getElementById('btnCancel').style.display = "none"; document.querySelectorAll('.input-panel input, .input-panel select, .input-panel textarea').forEach(i => i.value = ''); document.querySelectorAll('textarea.auto-expand').forEach(t => t.style.height = 'auto'); document.getElementById('inpType').value = "Daire"; document.getElementById('inpStatus').value = "Satılık"; }
-    function saveToDisk() { localStorage.setItem('GokhanOgutman_EST_DB_v17', JSON.stringify(portfolio)); }
+    function saveToDisk() { localStorage.setItem('KaracabayRE_EST_DB_v19', JSON.stringify(portfolio)); }
     function downloadData() { 
         const fullBackup = { portfolio: portfolio, crm: crmData }; const content = JSON.stringify(fullBackup, null, 4);
-        const a = document.createElement('a'); a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(content); a.download = "GokhanOgutman_FULL_Yedek_" + new Date().toISOString().slice(0,10) + ".tkt"; document.body.appendChild(a); a.click(); a.remove(); 
+        const a = document.createElement('a'); a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(content); a.download = "Karacabay_FULL_Yedek_" + new Date().toISOString().slice(0,10) + ".tkt"; document.body.appendChild(a); a.click(); a.remove(); 
     }
     function uploadData(input) {
         const file = input.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = function(e) {
