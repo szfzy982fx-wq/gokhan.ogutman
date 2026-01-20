@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GOKHAN OGUTMEN - v37</title>
+    <title>GOKHAN OGUTMEN - EMLAK v1</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #2c3e50;
-            --secondary: #3498db; /* Mavi - Bana Ait */
-            --shared: #9b59b6;    /* Mor - Paylaşımlı */
-            --accent: #27ae60;    /* Yeşil */
-            --danger: #c0392b;    /* Kırmızı */
-            --link-color: #e67e22; /* Turuncu */
-            --calc-color: #2980b9; /* Koyu Mavi */
+            --secondary: #3498db; 
+            --shared: #9b59b6;    
+            --accent: #27ae60;    
+            --danger: #c0392b;    
+            --link-color: #e67e22; 
+            --calc-color: #2980b9; 
             --tool-bg: #f8f9fa;
             --sold: #d63031;
         }
@@ -30,7 +30,6 @@
         .container { max-width: 1800px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; }
         header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
         
-        /* Renkli Toolbar */
         .tools-bar { display: flex; gap: 10px; background: var(--tool-bg); padding: 10px; border-radius: 6px; margin-bottom: 25px; border: 1px solid #ddd; flex-wrap: wrap; }
         .tool-btn { border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 700; color: white; display: flex; align-items: center; gap: 8px; transition: all 0.2s; text-decoration: none; }
         .tool-btn:hover { opacity: 0.9; transform: translateY(-1px); }
@@ -40,7 +39,6 @@
         .btn-link { background-color: var(--link-color); }
         .btn-backup { background: #f39c12; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
 
-        /* Form Alanı */
         .input-panel { background: #fdfdfd; padding: 20px; border: 1px solid #ddd; border-left: 6px solid var(--primary); margin-bottom: 30px; }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
         .form-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 5px; color: #555; text-transform: uppercase; }
@@ -53,13 +51,11 @@
         .btn-delete-rec { background: var(--danger); color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; display: none; }
         .btn-cancel { background: #7f8c8d; color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; display: none; }
 
-        /* Tablo ve Liste */
         table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; table-layout: fixed; }
         th { background: #34495e; color: white; padding: 12px; text-align: left; vertical-align: middle; }
         td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: middle; word-wrap: break-word; }
         tr:hover { background: #f9f9f9; }
         
-        /* Satır Renklendirme */
         tr.row-sold { background-color: #fff5f5; color: #999; }
         tr.row-rented { background-color: #fcf8e3; color: #777; }
         
@@ -68,16 +64,13 @@
         .badge-own { background: var(--secondary); } .badge-shared { background: var(--shared); }
         .type-text { display: block; font-weight: 900; text-transform: uppercase; font-size: 12px; margin-top: 3px; color: #444; }
         
-        /* Link Butonları */
         .direct-link-btn { display: inline-block; background-color: #3498db; color: white; text-decoration: none; padding: 4px 8px; border-radius: 3px; font-size: 11px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; font-weight: 600; }
         .link-sahibinden { background-color: #f1c40f; color: black; } .link-hepsi { background-color: #e74c3c; } .link-obudur { background-color: #8e44ad; } .link-emlakjet { background-color: #2ecc71; } .link-dosya { background-color: #95a5a6; border: 1px solid #7f8c8d; } .link-sosyal { background-color: #d63031; }
 
-        /* Filtre Alanı */
         .filter-bar { background: var(--primary); padding: 15px; border-radius: 6px; display: flex; gap: 10px; flex-wrap: wrap; color: white; align-items: center; }
         .filter-bar input, .filter-bar select { padding: 8px; border: none; border-radius: 4px; color: #333; }
         .btn-clear-filter { background: #95a5a6; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-left: auto; }
 
-        /* Modals */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; overflow-y: hidden; }
         .modal-content { background: white; margin: 3% auto; padding: 25px; width: 90%; border-radius: 8px; position: relative; max-height: 85vh; display: flex; flex-direction: column; overflow-y: auto; }
         .tool-modal-content { width: 450px; margin: 10% auto; }
@@ -93,15 +86,11 @@
         .calc-btn { padding: 15px; font-size: 18px; cursor: pointer; background: #eee; border: none; border-radius: 4px; }
         .calc-btn.op { background: var(--secondary); color: white; } .calc-btn.eq { background: var(--accent); color: white; grid-column: span 2; }
         
-        /* E-IMAR GRID (GÜNCELLENDİ) */
         .imar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .btn-imar-select { padding: 15px; background: #34495e; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; text-align: left; display: flex; align-items: center; justify-content: space-between; }
         .btn-imar-select:hover { background: #e67e22; }
         .btn-imar-select i { font-size: 18px; opacity: 0.6; }
         
-        /* Alternatif Link Butonu */
-        .btn-alt-link { background: #7f8c8d; font-size: 11px; padding: 5px; border-radius: 4px; margin-left: 5px; cursor: pointer; border: none; color: white; }
-
         .print-only { display: none; }
         @media print { .input-panel, .filter-bar, .backup-controls, .tools-bar, #loginOverlay { display: none !important; } .no-print { display: none !important; } .print-only { display: table-cell !important; } #appContainer { display: block !important; } body { background: white; padding: 0; margin: 0; } table { width: 100%; font-size: 10px; } th, td { border: 1px solid #ddd; padding: 4px; color: black; } }
     </style>
@@ -111,7 +100,7 @@
 <div id="loginOverlay">
     <div class="login-box">
         <h2>🔒 GÜVENLİ GİRİŞ</h2>
-        <p>GOKHAN OGUTMEN v37</p>
+        <p>GOKHAN OGUTMEN SİSTEMİ</p>
         <input type="password" id="loginPin" placeholder="Şifre (1923)" inputmode="numeric">
         <button onclick="checkLogin()">GİRİŞ YAP</button>
     </div>
@@ -120,7 +109,7 @@
 <div id="appContainer">
     <div class="container">
         <header>
-            <div><h1>🏢 GOKHAN OGUTMEN <span style="font-size:12px; color:#27ae60; border:1px solid #27ae60; padding:2px 8px; border-radius:10px;">ANTALYA BELEDİYELERİ</span></h1></div>
+            <div><h1>🏢 GOKHAN OGUTMEN <span style="font-size:12px; color:#27ae60; border:1px solid #27ae60; padding:2px 8px; border-radius:10px;">GAYRİMENKUL</span></h1></div>
             <div class="backup-controls">
                 <input type="file" id="fileUpload" style="display:none;" onchange="uploadData(this)">
                 <button class="btn-backup" onclick="document.getElementById('fileUpload').click()">📂 YÜKLE</button>
@@ -198,7 +187,7 @@
         </div>
 
         <table id="portfolioTable"><thead><tr><th width="10%">Tür / Durum</th><th width="12%">Lokasyon</th><th width="8%">Özellikler</th><th width="10%">m² (Brüt/Net)</th><th width="11%">Fiyat</th><th width="14%">Müşteri / Tel</th><th width="9%">Yetki</th><th class="no-print" width="6%" style="text-align:center;">Linkler</th><th class="no-print" width="5%" style="text-align:center;">Not</th><th class="no-print" width="8%">İşlem</th><th class="print-only">Açıklama / Notlar</th></tr></thead><tbody id="tableBody"></tbody></table>
-        <div class="legal-footer">Veriler yerel tarayıcıda saklanır. (v37 Düzeltilmiş Bağlantılar)</div>
+        <div class="legal-footer">Veriler yerel tarayıcıda saklanır. (Lisans: Gökhan Öğütmen)</div>
     </div>
 </div>
 
@@ -211,7 +200,6 @@
         <div class="imar-grid">
             <button class="btn-imar-select" onclick="window.open('https://muratpasa-bld.gov.tr/', '_blank')">Muratpaşa (Resmi) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
             <button class="btn-imar-select" onclick="window.open('https://www.muratpasa.bel.tr/', '_blank')">Muratpaşa (Alternatif) <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
-            
             <button class="btn-imar-select" onclick="window.open('https://www.kepez-bld.gov.tr/', '_blank')">Kepez <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
             <button class="btn-imar-select" onclick="window.open('https://www.konyaalti.bel.tr/', '_blank')">Konyaaltı <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
             <button class="btn-imar-select" onclick="window.open('https://dosemealti.bel.tr/', '_blank')">Döşemealtı <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
@@ -253,9 +241,12 @@
     const floorList = ["Giriş","Zemin","1","2","3","4","5","6","7","8","9","10+","Çatı Dubleks","Bahçe Dubleks","Müstakil"];
     const typeList = ["Daire","Villa","Arsa","İşyeri","Turistik","Komple Bina","Bahçe","Tarla","Zeytinlik"];
 
-    let crmData = JSON.parse(localStorage.getItem('KaracabayRE_CRM_v19')) || { investors: [], network: [] };
-    let portfolio = JSON.parse(localStorage.getItem('KaracabayRE_EST_DB_v19')) || [];
-    let checklist = JSON.parse(localStorage.getItem('KaracabayRE_CHK_v1')) || [];
+    // GÜNCELLEME: Veri Tabanı Anahtarları Değiştirildi (Eski veriler GÖRÜNMEZ)
+    // "Karacabay" yerine "GokhanOgutmen" prefix'i kullanıldı.
+    let crmData = JSON.parse(localStorage.getItem('GokhanOgutmen_CRM_v1')) || { investors: [], network: [] };
+    let portfolio = JSON.parse(localStorage.getItem('GokhanOgutmen_EST_DB_v1')) || [];
+    let checklist = JSON.parse(localStorage.getItem('GokhanOgutmen_CHK_v1')) || [];
+    
     let editingId = null; let crmEditingId = null;
 
     window.onload = function() { populateSelects(); renderTable(); };
@@ -346,7 +337,6 @@
                    (minP === 0 || p >= minP) && (maxP === 0 || p <= maxP);
         });
 
-        // HİYERARŞİK SIRALAMA (v34 İLE AYNI)
         filtered.sort((a, b) => {
             const getStatusScore = (s) => {
                 if (s === 'Satıldı') return 3;
@@ -355,7 +345,6 @@
             };
             const scoreA = getStatusScore(a.status);
             const scoreB = getStatusScore(b.status);
-
             if (scoreA !== scoreB) return scoreA - scoreB;
             if (scoreA === 1) {
                 const ownerA = a.ownership || 'BANA AİT';
@@ -400,9 +389,7 @@
                     }
                 }); 
             }
-
             let authHtml = item.authEnd ? `<small>${item.authEnd}</small>` : '-';
-
             tbody.innerHTML += `
             <tr class="${rowClass}">
                 <td>
@@ -440,9 +427,9 @@
     }
 
     function renderChecklist() { const c = document.getElementById('checklistContainer'); c.innerHTML = ''; if(checklist.length === 0) { c.innerHTML = '<div style="padding:15px; color:#999; text-align:center;">Henüz hatırlatma yok.</div>'; return; } checklist.forEach((item, index) => { const cls = item.done ? 'checked' : ''; c.innerHTML += `<div class="checklist-item ${cls}"><div style="display:flex; align-items:center; cursor:pointer; flex:1;" onclick="toggleCheck(${index})"><i class="fa-regular ${item.done ? 'fa-square-check' : 'fa-square'}" style="color:${item.done ? '#27ae60':'#ccc'}; font-size:18px;"></i><span style="margin-left:10px; flex:1;">${item.text}</span></div><button onclick="deleteCheck(${index})" style="background:none; border:none; color:#c0392b; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></div>`; }); }
-    function addCheckItem() { const t = document.getElementById('newCheckItem').value; if(!t) return; checklist.push({text: t, done: false}); localStorage.setItem('KaracabayRE_CHK_v1', JSON.stringify(checklist)); document.getElementById('newCheckItem').value=''; renderChecklist(); }
-    function toggleCheck(i) { checklist[i].done = !checklist[i].done; localStorage.setItem('KaracabayRE_CHK_v1', JSON.stringify(checklist)); renderChecklist(); }
-    function deleteCheck(i) { if(confirm('Silinsin mi?')) { checklist.splice(i, 1); localStorage.setItem('KaracabayRE_CHK_v1', JSON.stringify(checklist)); renderChecklist(); } }
+    function addCheckItem() { const t = document.getElementById('newCheckItem').value; if(!t) return; checklist.push({text: t, done: false}); localStorage.setItem('GokhanOgutmen_CHK_v1', JSON.stringify(checklist)); document.getElementById('newCheckItem').value=''; renderChecklist(); }
+    function toggleCheck(i) { checklist[i].done = !checklist[i].done; localStorage.setItem('GokhanOgutmen_CHK_v1', JSON.stringify(checklist)); renderChecklist(); }
+    function deleteCheck(i) { if(confirm('Silinsin mi?')) { checklist.splice(i, 1); localStorage.setItem('GokhanOgutmen_CHK_v1', JSON.stringify(checklist)); renderChecklist(); } }
     function autoResize(el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
     function formatPhone(input) { let n = input.value.replace(/\D/g, ''); if(n.length===0){input.value='';return;} if(n[0]!=='0') n='0'+n; n=n.substring(0,11); input.value = n; }
     function formatCurrency(input) { let v=input.value.replace(/\D/g, ''); input.value=v.replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
@@ -450,9 +437,11 @@
     function openModal(id) { document.getElementById(id).style.display = 'block'; document.body.classList.add('no-scroll'); }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; document.body.classList.remove('no-scroll'); }
     function closeModalOutside(e, id) { if(e.target == document.getElementById(id)) closeModal(id); }
-    function saveToDisk() { localStorage.setItem('KaracabayRE_EST_DB_v19', JSON.stringify(portfolio)); }
-    function downloadData() { const d = { portfolio: portfolio, crm: crmData, checklist: checklist }; const a = document.createElement('a'); a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(d)); a.download = "Karacabay_Yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
-    function uploadData(input) { const f = input.files[0]; if(!f) return; const r = new FileReader(); r.onload = e => { if(confirm("Yüklensin mi?")) { const d = JSON.parse(e.target.result); if(d.portfolio) { portfolio=d.portfolio; crmData=d.crm; checklist=d.checklist||[]; } else portfolio=d; saveToDisk(); localStorage.setItem('KaracabayRE_CRM_v19', JSON.stringify(crmData)); localStorage.setItem('KaracabayRE_CHK_v1', JSON.stringify(checklist)); renderTable(); alert("Tamam!"); } }; r.readAsText(f); }
+    
+    // YENİ KAYIT ANAHTARLARI
+    function saveToDisk() { localStorage.setItem('GokhanOgutmen_EST_DB_v1', JSON.stringify(portfolio)); }
+    function downloadData() { const d = { portfolio: portfolio, crm: crmData, checklist: checklist }; const a = document.createElement('a'); a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(d)); a.download = "GokhanOgutmen_Yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
+    function uploadData(input) { const f = input.files[0]; if(!f) return; const r = new FileReader(); r.onload = e => { if(confirm("Yüklensin mi?")) { const d = JSON.parse(e.target.result); if(d.portfolio) { portfolio=d.portfolio; crmData=d.crm; checklist=d.checklist||[]; } else portfolio=d; saveToDisk(); localStorage.setItem('GokhanOgutmen_CRM_v1', JSON.stringify(crmData)); localStorage.setItem('GokhanOgutmen_CHK_v1', JSON.stringify(checklist)); renderTable(); alert("Tamam!"); } }; r.readAsText(f); }
     function deleteFromForm() { if(confirm('SİLİNECEK!')) { portfolio = portfolio.filter(item => item.id !== editingId); saveToDisk(); renderTable(); resetForm(); } }
     
     function populateSelects() { 
@@ -475,7 +464,7 @@
     function renderNetwork() { const tbody = document.getElementById('networkTableBody'); tbody.innerHTML = ''; crmData.network.forEach(net => { tbody.innerHTML += `<tr><td><b>${net.name}</b></td><td>${net.city}</td><td>${net.phone}</td><td>${net.supply}</td><td>${net.lastCall}</td><td><button onclick="editCRMNetwork(${net.id})">DÜZENLE</button></td></tr>`; }); }
     function editCRMInvestor(id) { const i = crmData.investors.find(x => x.id === id); if(!i) return; crmEditingId = id; document.getElementById('invName').value = i.name; document.getElementById('invCity').value = i.city; document.getElementById('invPhone').value = i.phone; document.getElementById('invRequest').value = i.req; document.getElementById('btnInvSave').innerText = "GÜNCELLE"; document.getElementById('btnInvDelete').style.display = "inline-block"; }
     function editCRMNetwork(id) { const n = crmData.network.find(x => x.id === id); if(!n) return; crmEditingId = id; document.getElementById('netName').value = n.name; document.getElementById('netCity').value = n.city; document.getElementById('netPhone').value = n.phone; document.getElementById('netSupply').value = n.supply; document.getElementById('netLastCall').value = n.lastCall; document.getElementById('btnNetSave').innerText = "GÜNCELLE"; document.getElementById('btnNetDelete').style.display = "inline-block"; }
-    function saveCRM() { localStorage.setItem('KaracabayRE_CRM_v19', JSON.stringify(crmData)); }
+    function saveCRM() { localStorage.setItem('GokhanOgutmen_CRM_v1', JSON.stringify(crmData)); }
 
     let calcExp = ""; function calcInput(v) { calcExp += v; document.getElementById('calcDisplay').value = calcExp; } function calcClear() { calcExp = ""; document.getElementById('calcDisplay').value = ""; } function calcResult() { try { calcExp = eval(calcExp).toString(); document.getElementById('calcDisplay').value = calcExp; } catch(e) { document.getElementById('calcDisplay').value = "Hata"; calcExp=""; } }
     async function fetchCurrency() { try { const res = await fetch('https://api.exchangerate-api.com/v4/latest/TRY'); const data = await res.json(); if(document.getElementById('usdRate').value === "") document.getElementById('usdRate').value = (1 / data.rates.USD).toFixed(4); if(document.getElementById('eurRate').value === "") document.getElementById('eurRate').value = (1 / data.rates.EUR).toFixed(4); } catch(e) {} }
