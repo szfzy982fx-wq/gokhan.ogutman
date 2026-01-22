@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GÖKHAN ÖĞÜTMEN - EMLAK v49</title>
+    <title>GÖKHAN ÖĞÜTMEN - v50 (Tek Tuş Yazdır)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -122,6 +122,7 @@
         
         .print-only { display: none; }
         
+        /* --- YENİ YAZDIRMA MANTIĞI --- */
         @media print { 
             .input-panel, .filter-bar, .backup-controls, .tools-bar, #loginOverlay, .no-print, .btn-print-selected, .btn-whatsapp-selected { display: none !important; } 
             .print-only { display: table-cell !important; } 
@@ -129,7 +130,11 @@
             body { background: white; padding: 0; margin: 0; } 
             table { width: 100%; font-size: 10px; } 
             th, td { border: 1px solid #ddd; padding: 4px; color: black; } 
+            
+            /* ÖNEMLİ: Seçilmeyen satırları yazdırma modunda GİZLE */
             body.print-selected-mode tbody tr:not(.row-selected) { display: none !important; }
+            
+            /* Seçim sütununu kağıtta gizle */
             body.print-selected-mode .select-col-header, body.print-selected-mode .select-col-cell { display: none !important; }
         }
     </style>
@@ -139,7 +144,7 @@
 <div id="loginOverlay">
     <div class="login-box">
         <h2>🔒 GÜVENLİ GİRİŞ</h2>
-        <p>GÖKHAN ÖĞÜTMEN - v49</p>
+        <p>GÖKHAN ÖĞÜTMEN v50</p>
         <input type="password" id="loginPin" placeholder="Şifre (1923)" inputmode="numeric">
         <button onclick="checkLogin()">GİRİŞ YAP</button>
     </div>
@@ -148,7 +153,7 @@
 <div id="appContainer">
     <div class="container">
         <header>
-            <div><h1>🏢 GÖKHAN ÖĞÜTMEN <span style="font-size:12px; color:#27ae60; border:1px solid #27ae60; padding:2px 8px; border-radius:10px;">v49 (Backup Fix)</span></h1></div>
+            <div><h1>🏢 GÖKHAN ÖĞÜTMEN <span style="font-size:12px; color:#27ae60; border:1px solid #27ae60; padding:2px 8px; border-radius:10px;">v50 (Tek Tuş)</span></h1></div>
             <div class="backup-controls">
                 <input type="file" id="fileUpload" style="display:none;" onclick="this.value=null" onchange="uploadData(this)">
                 <button class="btn-backup" onclick="document.getElementById('fileUpload').click()">📂 YÜKLE</button>
@@ -232,14 +237,13 @@
             <button class="btn-clear-filter" onclick="clearFilters()" title="Filtreleri ve Seçimleri Sıfırla"><i class="fa-solid fa-rotate-left"></i> TEMİZLE</button>
             
             <button class="btn-print-selected" onclick="printSelected()">
-                <i class="fa-solid fa-check-double"></i> YAZDIR
+                <i class="fa-solid fa-check-double"></i> SEÇİLENLERİ YAZDIR
             </button>
             <button class="btn-whatsapp-selected" onclick="sendSelectedToWhatsapp()">
                 <i class="fa-brands fa-whatsapp"></i> WP GÖNDER
             </button>
 
-            <button onclick="window.print()" style="margin-left:5px; background:#34495e; border:none; color:white; padding:8px 15px; border-radius:4px; cursor:pointer;" title="Hepsini Yazdır">🖨️ TÜMÜ</button>
-        </div>
+            </div>
 
         <table id="portfolioTable">
             <thead>
@@ -263,7 +267,7 @@
             </thead>
             <tbody id="tableBody"></tbody>
         </table>
-        <div class="legal-footer">Veriler yerel tarayıcıda saklanır. (Gökhan Öğütmen Emlak - v49 Backup Fix)</div>
+        <div class="legal-footer">Veriler yerel tarayıcıda saklanır. (v50 Final Tek Tuş)</div>
     </div>
 </div>
 
@@ -481,14 +485,13 @@
     const floorList = ["Giriş","Zemin","1","2","3","4","5","6","7","8","9","10+","Çatı Dubleks","Bahçe Dubleks","Müstakil"];
     const typeList = ["Daire","Villa","Proje","Arsa","İşyeri","Turistik","Komple Bina","Bahçe","Tarla","Zeytinlik"];
 
-    // GÖKHAN ÖĞÜTMEN İÇİN ÖZEL DEPOLAMA ANAHTARLARI (TEMİZ BAŞLANGIÇ)
     let crmData = { investors: [], network: [] };
     let portfolio = [];
     let checklist = [];
 
-    try { const sC = localStorage.getItem('GokhanRE_CRM_v1'); if(sC) crmData = JSON.parse(sC); } catch(e){}
-    try { const sP = localStorage.getItem('GokhanRE_EST_DB_v1'); if(sP) portfolio = JSON.parse(sP); } catch(e){}
-    try { const sCh = localStorage.getItem('GokhanRE_CHK_v1'); if(sCh) checklist = JSON.parse(sCh); } catch(e){}
+    try { const sC = localStorage.getItem('KaracabayRE_CRM_v19'); if(sC) crmData = JSON.parse(sC); } catch(e){}
+    try { const sP = localStorage.getItem('KaracabayRE_EST_DB_v19'); if(sP) portfolio = JSON.parse(sP); } catch(e){}
+    try { const sCh = localStorage.getItem('KaracabayRE_CHK_v1'); if(sCh) checklist = JSON.parse(sCh); } catch(e){}
 
     let editingId = null; let crmEditingId = null;
 
@@ -588,14 +591,27 @@
     function toggleAllSelections(source) {
         const checkboxes = document.querySelectorAll('#tableBody input[type="checkbox"]');
         checkboxes.forEach(cb => {
-            cb.checked = source.checked;
-            toggleRowSelection(cb);
+            // Sadece görünür satırları seçmek için (filtrede kolaylık olsun diye)
+            if(cb.offsetParent !== null) {
+                cb.checked = source.checked;
+                toggleRowSelection(cb);
+            }
         });
     }
 
     function toggleRowSelection(checkbox) { const row = checkbox.closest('tr'); if(checkbox.checked) row.classList.add('row-selected'); else row.classList.remove('row-selected'); }
     
-    function printSelected() { const selectedCount = document.querySelectorAll('.row-selected').length; if(selectedCount === 0) { alert("Lütfen önce listeden yazdırmak istediğiniz satırları seçin (sol baştaki kutucuk)."); return; } document.body.classList.add('print-selected-mode'); window.print(); document.body.classList.remove('print-selected-mode'); }
+    // --- GÜNCELLENEN YAZDIRMA FONKSİYONU ---
+    function printSelected() { 
+        const selectedCount = document.querySelectorAll('.row-selected').length; 
+        if(selectedCount === 0) { 
+            alert("⚠️ Lütfen listeden yazdırmak istediğiniz kayıtları seçin (sol baştaki kutucuklar)."); 
+            return; 
+        } 
+        document.body.classList.add('print-selected-mode'); 
+        window.print(); 
+        document.body.classList.remove('print-selected-mode'); 
+    }
     
     function sendSelectedToWhatsapp() {
         const selectedCheckboxes = document.querySelectorAll('.row-selected input[type="checkbox"]');
@@ -746,9 +762,9 @@
         }); 
     }
     
-    function addCheckItem() { const t = document.getElementById('newCheckItem').value; if(!t) return; checklist.push({text: t, done: false}); localStorage.setItem('GokhanRE_CHK_v1', JSON.stringify(checklist)); document.getElementById('newCheckItem').value=''; renderChecklist(); }
-    function toggleCheck(i) { checklist[i].done = !checklist[i].done; localStorage.setItem('GokhanRE_CHK_v1', JSON.stringify(checklist)); renderChecklist(); }
-    function deleteCheck(i) { if(confirm('Silinsin mi?')) { checklist.splice(i, 1); localStorage.setItem('GokhanRE_CHK_v1', JSON.stringify(checklist)); renderChecklist(); } }
+    function addCheckItem() { const t = document.getElementById('newCheckItem').value; if(!t) return; checklist.push({text: t, done: false}); localStorage.setItem('KaracabayRE_CHK_v1', JSON.stringify(checklist)); document.getElementById('newCheckItem').value=''; renderChecklist(); }
+    function toggleCheck(i) { checklist[i].done = !checklist[i].done; localStorage.setItem('KaracabayRE_CHK_v1', JSON.stringify(checklist)); renderChecklist(); }
+    function deleteCheck(i) { if(confirm('Silinsin mi?')) { checklist.splice(i, 1); localStorage.setItem('KaracabayRE_CHK_v1', JSON.stringify(checklist)); renderChecklist(); } }
     
     function autoResize(el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
     function formatPhone(input) { let n = input.value.replace(/\D/g, ''); if(n.length===0){input.value='';return;} if(n[0]!=='0') n='0'+n; n=n.substring(0,11); input.value = n; }
@@ -757,10 +773,8 @@
     function openModal(id) { document.getElementById(id).style.display = 'block'; document.body.classList.add('no-scroll'); }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; document.body.classList.remove('no-scroll'); }
     function closeModalOutside(e, id) { if(e.target == document.getElementById(id)) closeModal(id); }
-    
-    // YENİ GÖKHAN ANAHTARLARINA KAYIT
-    function saveToDisk() { localStorage.setItem('GokhanRE_EST_DB_v1', JSON.stringify(portfolio)); }
-    function downloadData() { const d = { portfolio: portfolio, crm: crmData, checklist: checklist }; const a = document.createElement('a'); a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(d)); a.download = "GokhanOgutmen_Yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
+    function saveToDisk() { localStorage.setItem('KaracabayRE_EST_DB_v19', JSON.stringify(portfolio)); }
+    function downloadData() { const d = { portfolio: portfolio, crm: crmData, checklist: checklist }; const a = document.createElement('a'); a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(d)); a.download = "Gokhan_Ogutmen_Yedek.json"; document.body.appendChild(a); a.click(); a.remove(); }
     
     function uploadData(input) { 
         const f = input.files[0]; if(!f) return; 
@@ -777,8 +791,8 @@
                          alert("Yedek dosyası formatı tanınamadı!"); return;
                     }
                     saveToDisk(); 
-                    localStorage.setItem('GokhanRE_CRM_v1', JSON.stringify(crmData)); 
-                    localStorage.setItem('GokhanRE_CHK_v1', JSON.stringify(checklist)); 
+                    localStorage.setItem('KaracabayRE_CRM_v19', JSON.stringify(crmData)); 
+                    localStorage.setItem('KaracabayRE_CHK_v1', JSON.stringify(checklist)); 
                     alert("Yedek başarıyla yüklendi! Lütfen bekleyin...");
                     
                     const fCity = document.getElementById('filterCity');
@@ -800,12 +814,14 @@
     function populateSelects() { 
         const iC = document.getElementById('inpCity'); const fC = document.getElementById('filterCity');
         iC.innerHTML = '<option value="Antalya">Antalya</option>'; 
+        // Filtreye önce Tüm İller ve Antalya ekle
         fC.innerHTML = '<option value="all">Tüm İller</option><option value="Antalya">Antalya</option>';
         
         Object.keys(turkiyeData).sort().forEach(city => { if(city !== "Antalya") iC.innerHTML += `<option value="${city}">${city}</option>`; fC.innerHTML += `<option value="${city}">${city}</option>`; });
         
         handleCityChange('inpCity', 'inpDistrict', 'dl_mahalle_ekle');
         
+        // FİLTRE İÇİN VARSAYILAN ANTALYA YAP
         fC.value = "Antalya";
         handleCityChange('filterCity', 'filterDistrict', 'dl_mahalle_filtre');
 
@@ -832,7 +848,7 @@
     function resetNetworkTimer(id) { if(confirm("Görüşme yapıldı olarak işaretlensin mi? Tarih bugün olacak.")) { const idx = crmData.network.findIndex(n => n.id === id); if(idx > -1) { crmData.network[idx].lastCall = new Date().toISOString().split('T')[0]; saveCRM(); renderNetwork(); } } }
     function editCRMInvestor(id) { const i = crmData.investors.find(x => x.id === id); if(!i) return; crmEditingId = id; document.getElementById('invName').value = i.name; document.getElementById('invPhone').value = i.phone; document.getElementById('invType').value = i.type; document.getElementById('invRegion').value = i.region; document.getElementById('invBudget').value = i.budget; document.getElementById('invStatus').value = i.status; document.getElementById('invNote').value = i.note; document.getElementById('btnInvSave').innerText = "GÜNCELLE"; document.getElementById('btnInvDelete').style.display = "inline-block"; }
     function editCRMNetwork(id) { const n = crmData.network.find(x => x.id === id); if(!n) return; crmEditingId = id; document.getElementById('netName').value = n.name; document.getElementById('netPhone').value = n.phone; document.getElementById('netJob').value = n.job; document.getElementById('netCity').value = n.city; document.getElementById('netRelation').value = n.relation; document.getElementById('netNote').value = n.note; document.getElementById('netLastCall').value = n.lastCall; document.getElementById('btnNetSave').innerText = "GÜNCELLE"; document.getElementById('btnNetDelete').style.display = "inline-block"; }
-    function saveCRM() { localStorage.setItem('GokhanRE_CRM_v1', JSON.stringify(crmData)); }
+    function saveCRM() { localStorage.setItem('KaracabayRE_CRM_v19', JSON.stringify(crmData)); }
 
     // TOOLS
     let calcExp = ""; function calcInput(v) { if(v === '%') { calcExp += '/100'; } else { calcExp += v; } document.getElementById('calcDisplay').value = calcExp; } function calcClear() { calcExp = ""; document.getElementById('calcDisplay').value = ""; } function calcResult() { try { calcExp = eval(calcExp).toString(); document.getElementById('calcDisplay').value = calcExp; } catch(e) { document.getElementById('calcDisplay').value = "Hata"; calcExp=""; } }
